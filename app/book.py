@@ -22,3 +22,5 @@ def index():
        statement
     )
     return render_template('index.html', books=books)
+
+# %" union select *, Null as Col4, Null as Col5 from user--

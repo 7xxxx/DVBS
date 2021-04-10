@@ -3,5 +3,28 @@
 {% block title %}Books{% endblock %}
 
 {% block content %}
-Books
+<form class="block mt-3" action="/" method="post">
+    <div class="field has-addons">
+      <div class="control">
+        <input class="input" type="text" placeholder="Find a book" name="find">
+      </div>
+      <div class="control">
+        <input type="submit" value="Submit" class="button is-info">
+      </div>
+    </div>
+</form>
+{% for book in books %}
+    <article class="media">
+        <div class="media-content">
+            <div class="content">
+                <p>
+                    <h6 class="subtitle is-6">{{ book.title }}</h6>
+                    <strong>By:</strong> {{ book.author }}</strong><br>
+                    <strong>ISBN:</strong> {{ book.isbn }}<br>
+                    <strong>Publisher:</strong> {{ book.publisher }}
+                </p>
+            </div>
+        </div>
+    </article>
+{% endfor %}
 {% endblock %}

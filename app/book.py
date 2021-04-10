@@ -8,6 +8,17 @@ from app.db import get_db
 
 bp = Blueprint('book', __name__, url_prefix='/')
 
-@bp.route('/')
+@bp.route('/', methods=('GET', 'POST'))
 def index():
-    return render_template('index.html')
+    db = get_db()
+    statement = 'SELECT * FROM book'
+
+    if request.method == 'POST':
+        find = request.form['find']
+        statement = 'SELECT * from book WHERE title LIKE "%{}%"'.format(find)
+        print(statement)
+
+    books = db.execute(
+       statement
+    )
+    return render_template('index.html', books=books)

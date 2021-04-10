@@ -5,11 +5,16 @@
 {% endblock %}
 
 {% block content %}
-  <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Register">
-  </form>
+<form class="box" method="post">
+    <label class="label" for="username">Username</label>
+    <input class="input" type="text" name="username" placeholder="Username.." id="username" required><br><br>
+
+    <label class="label" for="password">Password</label>
+    <input class="input" type="password" name="password" placeholder="Password.." id="password" required><br><br>
+
+    <div class="control">
+        <button class="button is-primary">Register</button>
+    </div><br>
+
+</form>
 {% endblock %}

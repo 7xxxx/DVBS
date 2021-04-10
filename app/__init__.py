@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from . import db
+from . import db, book
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -16,12 +16,12 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
+    
+    # Initialize database
     db.init_app(app)
 
-    @app.route("/hello")
-    def hello():
-        return "Hello, World!"
+    # register book blueprint
+    app.register_blueprint(book.bp)
 
     return app
 

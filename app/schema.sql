@@ -12,5 +12,6 @@ CREATE TABLE book (
     isbn TEXT NOT NULL,
     title TEXT NOT NULL,
     author TEXT NOT NULL,
-    publisher TEXT NOT NULL
+    publisher TEXT NOT NULL,
+    request INTEGER NOT NULL CHECK (request IN (0, 1))
 );

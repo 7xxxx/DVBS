@@ -8,40 +8,50 @@
   </head>
   <body>
   <section>
-    <div class="container">
-        <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+    <div class="container" >
+        <nav class="navbar is-light" role="navigation" aria-label="main navigation" >
             <div class="navbar-brand">
-                <h3 class="navbar-item title is-3">Books</h3>
+                <a class="navbar-item" href="{{ url_for('book.index') }}">
+                  <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+                </a>
+
                 <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
-                  <span aria-hidden="true"></span>
-                  <span aria-hidden="true"></span>
-                  <span aria-hidden="true"></span>
+                      <span aria-hidden="true"></span>
+                      <span aria-hidden="true"></span>
+                      <span aria-hidden="true"></span>
                 </a>
             </div>
+
             <div class="navbar-menu" id="navMenu">
-                <div class="navbar-end">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="{{ url_for('book.index') }}">
+                        <strong>Search</strong>
+                    </a>
+                    <a class="navbar-item" href="#">
+                        <strong>Request Book</strong>
+                    </a>
+                </div>
+
+                <div class="navbar-end" style="padding-right: 2%;">
                     <div class="navbar-item">
-                        {% if g.user %}
-                        <p class="control">
-                            <a class="button is-primary" href="{{ url_for('auth.logout') }}">
-                              <span class="icon">
-                                <i class="fas fa-login"></i>
-                              </span>
-                              <span>Log out</span>
-                            </a>
-                        </p>
-                        {% else %}
-                        <p class="control">
-                            <a class="button is-primary" href="{{ url_for('auth.login') }}">
-                              <span class="icon">
-                                <i class="fas fa-login"></i>
-                              </span>
-                              <span>Log in</span>
-                            </a>
-                        </p>
-                        {% endif %}
+                        <div class="field is-grouped">
+                            <p class="control">
+
+                            {% if g.user %}
+                                <a class="button is-primary" href="{{ url_for('auth.logout') }}">
+                                  <span>Log out</span>
+                                </a>
+                            {% else %}
+                                <a class="button is-primary" href="{{ url_for('auth.login') }}">
+                                  <span>Log in</span>
+                                </a>
+                            {% endif %}
+
+                            </p>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
         </nav>

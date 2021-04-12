@@ -4,22 +4,18 @@
 
 {% block content %}
 <form class="block mt-3" action="/" method="post">
-    <div class="field has-addons">
-      <div class="control">
+    <div class="field has-addons" style="padding-left: 2%; padding-right: 2%;">
         <input class="input" type="text" placeholder="Find a book" name="find">
-      </div>
-      <div class="control">
         <input type="submit" value="Submit" class="button is-info">
-      </div>
     </div>
 </form>
 {% for book in books %}
-    <article class="media">
-        <div class="media-content">
+    <article class="media" style="padding-left: 2%; padding-right: 2%;">
+        <div class="media-content" >
             <div class="content">
                 <p>
                     <h6 class="subtitle is-6">{{ book.title }}</h6>
-                    <strong>By:</strong> {{ book.author }}</strong><br>
+                    <strong>By:</strong> {{ book.author }}<br>
                     <strong>ISBN:</strong> {{ book.isbn }}<br>
                     <strong>Publisher:</strong> {{ book.publisher }}
                 </p>

@@ -21,8 +21,9 @@ def index():
 
     books = db.execute(
         statement
-    )
-    return render_template('book/index.html', books=books)
+    ).fetchall()
+    comments = db.execute('SELECT * FROM comments').fetchall()
+    return render_template('book/index.html', books=books, comments=comments)
 
 
 @bp.route('/inquiry', methods=('GET', 'POST'))
@@ -30,8 +31,8 @@ def inquiry():
     db = get_db()
     get_books = 'SELECT * FROM book WHERE request = 1'
     get_comments = 'SELECT * FROM comments'
-    requests = db.execute(get_books)
-    comments = db.execute(get_comments)
+    requests = db.execute(get_books).fetchall()
+    comments = db.execute(get_comments).fetchall()
 
     if request.method == 'POST':
         isbn = request.form['isbn']
@@ -46,7 +47,7 @@ def inquiry():
 
     return render_template('book/inquiry.html', requests=requests, comments=comments)
 
-@bp.route('/comment/<id>', methods=['POST'])
+@bp.route('/comment/<bid>', methods=['POST'])
 def comment(bid):
     db = get_db()
     text = request.form['text']
@@ -55,5 +56,11 @@ def comment(bid):
         "INSERT INTO comments (text, book_id) VALUES (?, ?)", (text, bid,)
     )
     db.commit()
+    
+    if request.environ['HTTP_ORIGIN'] is not None:
+        return redirect(request.environ['HTTP_ORIGIN'])
+    else:
+        return redirect(url_for('book.index'))
+
 
     

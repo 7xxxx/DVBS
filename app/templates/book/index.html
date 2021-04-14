@@ -40,6 +40,22 @@
                     </article>
                 {% endif %}
             {% endfor %}
+            <form method="post" action="/comment/{{book.id}}">
+                <article class="media">
+                  <div class="media-content">
+                    <div class="field">
+                      <p class="control">
+                        <textarea name="text" class="textarea" placeholder="Add a comment..."></textarea>
+                      </p>
+                    </div>
+                    <div class="field">
+                      <p class="control">
+                        <button type="submit" class="button">Post comment</button>
+                      </p>
+                    </div>
+                  </div>
+                </article>
+            </form>
         </div>
     </article>
 {% endfor %}

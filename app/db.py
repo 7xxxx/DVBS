@@ -28,18 +28,25 @@ def init_db():
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
-    app.cli.add_command(insert_books)
 
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    init_db()
-    click.echo("DB initialized")
+def insert_admin():
+    db = get_db()
 
-@click.command('insert-books')
-@with_appcontext
+    with current_app.open_resource('users.sql') as f:
+        db.executescript(f.read().decode('utf8'))
+
 def insert_books():
     db = get_db()
     with current_app.open_resource('books.sql') as f:
         db.executescript(f.read().decode('utf8'))
     click.echo("Books inserted")
+
+
+@click.command('init-db')
+@with_appcontext
+def init_db_command():
+    init_db()
+    insert_admin()
+    insert_books()
+    click.echo("DB initialized")
+

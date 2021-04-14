@@ -11,28 +11,27 @@
 {% else %}
     <fieldset disabled>
 {% endif %}
-
         <label class="label">ISBN</label>
         <div class="control">
-            <input class="input" type="text" placeholder="e.g 978-3103974829">
+            <input name="isbn" class="input" type="text" placeholder="e.g 978-3103974829">
         </div>
         <br>
 
         <label class="label">Title</label>
         <div class="control">
-            <input class="input" type="text" placeholder="e.g. Great Book">
+            <input name="title" class="input" type="text" placeholder="e.g. Great Book">
         </div>
         <br>
 
         <label class="label">Author</label>
         <div class="control">
-            <input class="input" type="text" placeholder="e.g Alex Smith">
+            <input name="author" class="input" type="text" placeholder="e.g Alex Smith">
         </div>
         <br>
 
         <label class="label">Publisher</label>
         <div class="control">
-            <input class="input" type="text" placeholder="e.g. Great Publisher">
+            <input name="publisher" class="input" type="text" placeholder="e.g. Great Publisher">
         </div>
         <br>
 
@@ -62,9 +61,25 @@
                     <h6 class="subtitle is-6">{{ book.title }}</h6>
                     <strong>By:</strong> {{ book.author }}<br>
                     <strong>ISBN:</strong> {{ book.isbn }}<br>
-                    <strong>Publisher:</strong> {{ book.publisher }}
+                    <strong>Publisher:</strong> {{ book.publisher | safe }}
                 </p>
             </div>
+            
+            <h5 class="title is-5">Comments:</h5>
+            {% for comment in comments if comment.book_id == book.id %}
+                    <article class="media">
+                        <figure class="media-left">
+                            <p class="image is-48x48">
+                              <img src="https://picsum.photos/96/96">
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                {{ comment.text }}
+                            </div>
+                        </div>
+                    </article>
+            {% endfor %}
         </div>
     </article>
 {% endfor %}

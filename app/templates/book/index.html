@@ -21,6 +21,25 @@
                     <strong>Publisher:</strong> {{ book.publisher }}
                 </p>
             </div>
+
+
+            <h5 class="title is-5">Comments:</h5>
+            {% for comment in comments %}
+                {% if comment.book_id == book.id %}
+                    <article class="media">
+                        <figure class="media-left">
+                            <p class="image is-48x48">
+                              <img src="https://picsum.photos/96/96">
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                {{ comment.text }}
+                            </div>
+                        </div>
+                    </article>
+                {% endif %}
+            {% endfor %}
         </div>
     </article>
 {% endfor %}

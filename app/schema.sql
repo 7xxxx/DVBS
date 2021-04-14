@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS book;
+DROP TABLE IF EXISTS comments;
 
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -15,3 +16,10 @@ CREATE TABLE book (
     publisher TEXT NOT NULL,
     request INTEGER NOT NULL CHECK (request IN (0, 1))
 );
+
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    text TEXT NOT NULL,
+    book_id INTEGER NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES book(id)
+)

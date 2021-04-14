@@ -28,7 +28,32 @@ def index():
 @bp.route('/inquiry', methods=('GET', 'POST'))
 def inquiry():
     db = get_db()
-    statement = 'SELECT * FROM book WHERE request = 1'
-    requests = db.execute(statement)
+    get_books = 'SELECT * FROM book WHERE request = 1'
+    get_comments = 'SELECT * FROM comments'
+    requests = db.execute(get_books)
+    comments = db.execute(get_comments)
 
-    return render_template('book/inquiry.html', requests=requests)
+    if request.method == 'POST':
+        isbn = request.form['isbn']
+        title = request.form['title']
+        author = request.form['author']
+        publisher = request.form['publisher']
+
+        db.execute(
+            "INSERT INTO book (isbn, title, author, publisher, request) VALUES (?, ?, ?, ?, 1)", (isbn, title, author, publisher,)
+        )
+        db.commit()
+
+    return render_template('book/inquiry.html', requests=requests, comments=comments)
+
+@bp.route('/comment/<id>', methods=['POST'])
+def comment(bid):
+    db = get_db()
+    text = request.form['text']
+
+    db.execute(
+        "INSERT INTO comments (text, book_id) VALUES (?, ?)", (text, bid,)
+    )
+    db.commit()
+
+    

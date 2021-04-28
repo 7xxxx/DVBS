@@ -1,5 +1,5 @@
 import functools
-
+import markdown
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
 )
@@ -22,7 +22,7 @@ def index():
     books = db.execute(
         statement
     ).fetchall()
-    comments = db.execute('SELECT * FROM comments').fetchall()
+    comments = get_comments() 
     return render_template('book/index.html', books=books, comments=comments)
 
 
@@ -32,7 +32,7 @@ def inquiry():
     get_books = 'SELECT * FROM book WHERE request = 1'
     get_comments = 'SELECT * FROM comments'
     requests = db.execute(get_books).fetchall()
-    comments = db.execute(get_comments).fetchall()
+    comments = get_comments() 
 
     if request.method == 'POST':
         isbn = request.form['isbn']
@@ -61,6 +61,27 @@ def comment(bid):
         return redirect(request.environ['HTTP_ORIGIN'])
     else:
         return redirect(url_for('book.index'))
+
+def get_comments():
+    """
+    Select all comments from the database and
+    transform their md syntax into valid html.
+    """
+    db = get_db()
+    comments = db.execute("SELECT * FROM comments").fetchall()
+    parsed_comments = []
+
+    for comment in comments:
+        l = list(comment)
+        parsed_comments.append(
+                {
+                    "id" : l[0],
+                    "text" : markdown.markdown(l[1]),
+                    "book_id" : l[2],
+                }
+        )
+        
+    return parsed_comments
 
 
     

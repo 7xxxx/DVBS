@@ -30,7 +30,6 @@ def index():
 def inquiry():
     db = get_db()
     get_books = 'SELECT * FROM book WHERE request = 1'
-    get_comments = 'SELECT * FROM comments'
     requests = db.execute(get_books).fetchall()
     comments = get_comments() 
 

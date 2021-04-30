@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Profile of {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="tile is-ancestor">
+        <div class="tile is-parent is-vertical is-4 ">
+            <div class="tile is-child is-hidden-mobile">
+                <div class="tile is-child box is-primary is-info">
+                    <figure class="image is-square">
+                          <img src="https://picsum.photos/512/512">
+                    </figure>
+                </div>
+            </div>
+        </div>
+        <div class="tile is-parent">
+            <div class="tile is-child box">
+                <form method="post" action="/profile/{{ g.user['username'] }}">
+                    <p class="title">Edit your Profile</p>
+                    <p class="subtitle">Logged in as user <b>{{ g.user['username'] }}</b></p>
+
+                    <label class="label">Change your current name</label>
+                    <div class="control">
+                        <input name="username" class="input" type="text" placeholder="{{ g.user['username'] }}" id="username">
+                    </div>
+                    <br>
+
+                    <label class="label">Change your current password</label>
+                    <div class="control">
+                        <input name="password" class="input" type="password" placeholder="password" id="password">
+                    </div>
+                    <br>
+
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <input type="submit" value="Submit" class="button is-info">
+                            <br><br>
+                        </p>
+                    </div>
+                    </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+{#    <form class="box" method="post" action="/profile/{{ g.user['username'] }}">#}
+{#     <label class="Username">{{ g.user['username'] }}</label>#}
+{#        <div class="control">#}
+{#            <input name="username" class="input" type="text" placeholder="{{ g.user['username'] }}" id="username">#}
+{#        </div>#}
+{#        <br>#}
+{##}
+{#        <label class="label">Password</label>#}
+{#        <div class="control">#}
+{#            <input name="password" class="input" type="password" placeholder="g.user['password']" id="password">#}
+{#        </div>#}
+{#        <br>#}
+{##}
+{#        <div class="field is-grouped">#}
+{#            <p class="control">#}
+{#                <input type="submit" value="Submit" class="button is-info">#}
+{#                <br><br>#}
+{#            </p>#}
+{#        </div>#}
+{#    </form>#}
+
+{% endblock %}

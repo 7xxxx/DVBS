@@ -19,10 +19,8 @@ def register():
             error = 'Username required'
         elif not password:
             error = 'Password required'
-        elif db.execute(
-            'SELECT id FROM user WHERE username = ?', (username,)
-        ).fetchone() is not None:
-            error = 'User {} is already registered.'.format(username)
+        elif username_exists(username, db):
+            error = 'Username {} is already registered.'.format(username)
 
         if error is None:
             db.execute(
@@ -89,3 +87,12 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+
+def username_exists(username, db):
+    """
+    Check if the username is already in use.
+    """
+    if db.execute('SELECT id FROM user WHERE username = ?', (username,)).fetchone() is not None:
+        return True
+    return False

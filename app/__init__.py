@@ -1,7 +1,8 @@
 import os
 
 from flask import Flask
-from . import db, book, auth
+from . import db, book, auth, user
+
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -23,8 +24,11 @@ def create_app(test_config=None):
     # register book blueprint
     app.register_blueprint(book.bp)
 
-    # regsiter auth blueprint
+    # register auth blueprint
     app.register_blueprint(auth.bp)
+
+    # register profile blueprint
+    app.register_blueprint(user.bp)
 
     return app
 

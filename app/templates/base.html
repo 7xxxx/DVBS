@@ -33,6 +33,13 @@
                 </div>
 
                 <div class="navbar-end" style="padding-right: 2%;">
+                        {% if g.user %}
+                            <a class="navbar-item" href="{{ url_for('user.profile', username=g.user['username']) }}">
+                        {% else %}
+                            <a class="navbar-item" href="{{ url_for('auth.login') }}">
+                        {% endif %}
+                        <strong>Profile</strong>
+                        </a>
                     <div class="navbar-item">
                         <div class="field is-grouped">
                             <p class="control">

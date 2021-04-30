@@ -1,4 +1,4 @@
-{% import '_macros.html' as book_macros %}
+{% import '_macros.html' as macros %}
 {% extends 'base.html' %}
 
 {% block title %}Books{% endblock %}
@@ -12,6 +12,6 @@
 </form>
 
 {% for book in books %}
-    {{ book_macros.show_book(book, comments) }}
+    {{ macros.show_book(book, comments) }}
 {% endfor %}
 {% endblock %}

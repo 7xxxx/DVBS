@@ -1,3 +1,5 @@
+{% import '_macros.html' as macros %}
+
 {% extends 'base.html' %}
 
 {% block header %}
@@ -17,7 +19,7 @@
         </div>
         <div class="tile is-parent">
             <div class="tile is-child box">
-                <form method="post" action="/profile/{{ g.user['username'] }}">
+                <form method="post" action="/user/{{ g.user['username'] }}" id="form1">
                     <p class="title">Edit your Profile</p>
                     <p class="subtitle">Logged in as user <b>{{ g.user['username'] }}</b></p>
 
@@ -32,38 +34,17 @@
                         <input name="password" class="input" type="password" placeholder="password" id="password">
                     </div>
                     <br>
-
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <input type="submit" value="Submit" class="button is-info">
-                            <br><br>
-                        </p>
-                    </div>
-                    </form>
-            </div>
+                </form>
+                <div class="buttons are-default is-grouped">
+                    <p class="control">
+                        <button type="submit" name="delete" value="0" form="form1" class="button button is-success">Save changes</button>
+                        <button type="submit" name="delete" value="1" form="form1" class="button button is-danger">Delete your Account</button>
+                        <br><br>
+                    </p>
+                </div>
+                {{ macros.show_errormsg() }}
             </div>
         </div>
     </div>
-
-{#    <form class="box" method="post" action="/profile/{{ g.user['username'] }}">#}
-{#     <label class="Username">{{ g.user['username'] }}</label>#}
-{#        <div class="control">#}
-{#            <input name="username" class="input" type="text" placeholder="{{ g.user['username'] }}" id="username">#}
-{#        </div>#}
-{#        <br>#}
-{##}
-{#        <label class="label">Password</label>#}
-{#        <div class="control">#}
-{#            <input name="password" class="input" type="password" placeholder="g.user['password']" id="password">#}
-{#        </div>#}
-{#        <br>#}
-{##}
-{#        <div class="field is-grouped">#}
-{#            <p class="control">#}
-{#                <input type="submit" value="Submit" class="button is-info">#}
-{#                <br><br>#}
-{#            </p>#}
-{#        </div>#}
-{#    </form>#}
 
 {% endblock %}

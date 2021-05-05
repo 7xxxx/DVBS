@@ -24,7 +24,7 @@ def profile(username):
     elif request.method == 'GET' and len(request.args) > 0:
         new_username = request.args.get("username")
         new_password = request.args.get("password")
-        delete = request.args.get("delete", int)
+        delete = int(request.args.get("delete"))
         process_request(new_username, new_password, delete)
 
     return render_template('user/profile.html', user=username)

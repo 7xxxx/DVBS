@@ -8,5 +8,13 @@ setup(
     zip_safe=False,
     install_requires=[
         'flask',
+        'click',
+        'greenlet',
+        'itsdangerous',
+        'Jinja2',
+        'Markdown',
+        'MarkupSafe',
+        'pkg-resources',
+        'Werkzeug',
     ],
 )

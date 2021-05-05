@@ -16,34 +16,48 @@ bp = Blueprint('user', __name__, url_prefix='/user')
 @login_required
 def profile(username):
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
+        new_username = request.form['username']
+        new_password = request.form['password']
         delete = int(request.form['delete'])
-        user_id = session.get('user_id')
-        db = get_db()
-        error = None
-        msg = None
+        process_request(new_username, new_password, delete)
 
-        if delete == 1:
-            delete_profile(user_id, db)
-            msg = "profile deleted"
-        elif username and password:
-            error = update_username(user_id, username, db)
+    elif request.method == 'GET' and len(request.args) > 0:
+        new_username = request.args.get("username")
+        new_password = request.args.get("password")
+        delete = request.args.get("delete", int)
+        process_request(new_username, new_password, delete)
+
+    return render_template('user/profile.html', user=username)
+
+
+def process_request(username, password, delete):
+    user_id = session.get('user_id')
+    db = get_db()
+    msg = None
+    error = None
+
+    if delete == 1:
+        delete_profile(user_id, db)
+        msg = "profile deleted"
+    elif username and password:
+        error = update_username(user_id, username, db)
+        if error is None:
             update_password(user_id, password, db)
             msg = "username and password updated"
-        elif username:
-            error = update_username(user_id, username, db)
+    elif username:
+        error = update_username(user_id, username, db)
+        if error is None:
             msg = "username updated"
-        elif password:
-            update_password(user_id, password, db)
-            msg = "password updated"
+    elif password:
+        update_password(user_id, password, db)
+        msg = "password updated"
 
-        if error:
-            flash(error)
-        else:
-            flash(msg)
-    return render_template('user/profile.html', user=username)
+    if error:
+        flash(error, 'error')
+        return False
+    else:
+        flash(msg)
+        return True
 
 
 def delete_profile(user_id, db):

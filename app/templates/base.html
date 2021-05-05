@@ -1,3 +1,5 @@
+{% import '_macros.html' as macros %}
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -58,9 +60,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </nav>
       {% block content %}{% endblock %}
     </div>
@@ -90,8 +90,20 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
-
+  deleteErrMsg();
 });
+
+function deleteErrMsg() {
+    //Get all objects of notification and delete class and iterate over each delete object
+     (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+    const $notification = $delete.parentNode;
+
+    //on close('X') button click, remove the notification from the page
+    $delete.addEventListener('click', () => {
+      $notification.parentNode.removeChild($notification);
+    });
+  });
+}
     </script>
   </body>
 </html>

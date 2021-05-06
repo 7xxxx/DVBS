@@ -1,3 +1,0 @@
-include app/schema.sql
-graft app/templates
-global-exclude *.pyc

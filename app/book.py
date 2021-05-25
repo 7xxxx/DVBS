@@ -1,3 +1,5 @@
+import sqlite3
+
 import markdown
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
@@ -18,10 +20,14 @@ def index():
         statement = 'SELECT * from book WHERE title LIKE "%{}%" AND request = 0'.format(find)
         print(statement)
 
-    books = db.execute(
-        statement
-    ).fetchall()
-    comments = get_comments() 
+    try:
+        books = db.execute(
+            statement
+        ).fetchall()
+    except sqlite3.OperationalError as err:
+        return render_template('book/index.html', error=err)
+
+    comments = get_comments()
     return render_template('book/index.html', books=books, comments=comments)
 
 

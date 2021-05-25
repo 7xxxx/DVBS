@@ -14,4 +14,8 @@
 {% for book in books %}
     {{ macros.show_book(book, comments) }}
 {% endfor %}
+
+{% if error %}
+    {{ macros.show_errormsg(error)}}
+{% endif %}
 {% endblock %}

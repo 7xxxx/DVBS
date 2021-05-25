@@ -35,6 +35,11 @@
                     </div>
                     <br>
                 </form>
+		<form action="photo" method="POST" enctype="multipart/form-data">
+		  <input type="file" name="file" />
+		  <input type="hidden" name="id" value="{{ g.user['id'] }}" />
+		  <input type="submit" value="Submit File" />
+		</form>
                 <div class="buttons are-default is-grouped">
                     <p class="control">
                         <button type="submit" name="delete" value="0" form="form1" class="button button is-success">Save changes</button>

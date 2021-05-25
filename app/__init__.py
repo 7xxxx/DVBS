@@ -9,12 +9,15 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'insecure.sqlite'),
+        FILEPATH=os.path.join(app.instance_path, 'files'),
     )
 
     app.config.from_pyfile('config.py', silent=True)
 
+    # Create required directories if they don't exist
     try:
         os.makedirs(app.instance_path)
+        os.makedirs(app.config['FILEPATH'])
     except OSError:
         pass
     

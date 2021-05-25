@@ -1,7 +1,8 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session
+    Blueprint, flash, g, redirect, render_template, request, session, current_app, url_for
 )
 
+import os
 import app.auth
 from app.auth import (
     login_required, username_exists
@@ -80,3 +81,28 @@ def update_password(user_id, password, db):
                (generate_password_hash(password, method='plain', salt_length=0),
                 user_id,))
     db.commit()
+
+@bp.route('/photo', methods=('POST'))
+@login_required
+def photo():
+    file_path = current_app.config['FILEPATH']
+
+    if request.method == 'POST':
+        f = request.files['file']
+
+        if f:
+            i = request.form['id']
+            p = os.path.join(file_path, i)
+            try:
+                os.makedirs(p)
+            except OSError:
+                pass
+            print(os.path.join(p, f.filename))
+
+            f.save(os.path.join(p, f.filename))
+            flash("File: '" + os.path.join(p, f.filename) + "' saved.")
+        else:
+            flash("No file selected.")
+    else:
+        pass
+    return redirect(url_for('user.profile', username="admin"))

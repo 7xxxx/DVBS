@@ -82,7 +82,7 @@ def update_password(user_id, password, db):
                 user_id,))
     db.commit()
 
-@bp.route('/photo', methods=('POST'))
+@bp.route('/photo', methods=('GET', 'POST'))
 @login_required
 def photo():
     file_path = current_app.config['FILEPATH']

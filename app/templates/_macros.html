@@ -45,7 +45,7 @@
 </article>
 {% endmacro %}
 
-{# Flash flask error message #}
+{# Show flask flash error message #}
 {% macro show_errormsg() %}
 {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -60,7 +60,7 @@
 {% endmacro %}
 
 {# Show specific error message #}
-{% macro show_errormsg(error) %}
+{% macro show_specific_errormsg(error) %}
     {% if error %}
         <div class="notification is-danger">
                 <button class="delete"></button>

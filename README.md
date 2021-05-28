@@ -1,6 +1,7 @@
-# WebappSecurityResearch
+# Damn Vulnerable Book Store (DVBS)
+Simple book store written in Python (Flask) to show common vulnerabilities of web applications.
 
-##Deployment
+## Deployment
 ### Build and run as docker container
 ```
 docker build -t app .

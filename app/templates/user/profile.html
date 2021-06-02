@@ -12,7 +12,12 @@
             <div class="tile is-child is-hidden-mobile">
                 <div class="tile is-child box is-primary is-info">
                     <figure class="image is-square">
-                          <img src="https://picsum.photos/512/512">
+                        <img src={% if img == '' %}
+                            "https://picsum.photos/512/512"
+                             {% else %}
+                             "{{ url_for('static', filename=img) }}"
+                             {% endif %}
+                        >
                     </figure>
                 </div>
             </div>
@@ -35,11 +40,6 @@
                     </div>
                     <br>
                 </form>
-		<form action="photo" method="POST" enctype="multipart/form-data">
-		  <input type="file" name="file" />
-		  <input type="hidden" name="id" value="{{ g.user['id'] }}" />
-		  <input type="submit" value="Submit File" />
-		</form>
                 <div class="buttons are-default is-grouped">
                     <p class="control">
                         <button type="submit" name="delete" value="0" form="form1" class="button button is-success">Save changes</button>
@@ -47,6 +47,25 @@
                         <br><br>
                     </p>
                 </div>
+                 
+                <p class="title mt-5">Change Profile Picture</p>
+                <hr>
+                <form action="photo" method="POST" enctype="multipart/form-data">
+                    <div class="buttons">
+                        <div class="file is-normal mr-5">
+                            <label class="file-label">
+                                <input class="file-input" type="file" name="file" />
+                                <span class="file-cta">
+                                    <span class="file-label">
+                                        Image upload
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                      <input type="hidden" name="id" value="{{ g.user['id'] }}" />
+                      <input class="button is-normal is-success" type="submit" value="Submit File" />
+                    </div>
+                </form>
                 {{ macros.show_errormsg() }}
             </div>
         </div>

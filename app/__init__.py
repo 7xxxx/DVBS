@@ -9,7 +9,7 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'insecure.sqlite'),
-        FILEPATH=os.path.join(app.instance_path, 'files'),
+        IMGPATH="images",
     )
 
     app.config.from_pyfile('config.py', silent=True)

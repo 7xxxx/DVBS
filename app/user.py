@@ -1,5 +1,6 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, current_app, url_for
+    Blueprint, flash, g, redirect, render_template, request, session,
+    current_app, url_for
 )
 
 import os
@@ -16,6 +17,7 @@ bp = Blueprint('user', __name__, url_prefix='/user')
 @bp.route('/<username>', methods=('GET', 'POST'))
 @login_required
 def profile(username):
+    db = get_db()
     if request.method == 'POST':
         new_username = request.form['username']
         new_password = request.form['password']
@@ -28,7 +30,9 @@ def profile(username):
         delete = int(request.args.get("delete"))
         process_request(new_username, new_password, delete)
 
-    return render_template('user/profile.html', user=username)
+    user = db.execute("SELECT * from user WHERE username = ?", (username,)).fetchone()
+
+    return render_template('user/profile.html', user=username, img=user['image'])
 
 
 def process_request(username, password, delete):
@@ -85,22 +89,30 @@ def update_password(user_id, password, db):
 @bp.route('/photo', methods=('GET', 'POST'))
 @login_required
 def photo():
-    file_path = current_app.config['FILEPATH']
+    db = get_db()
+    img_path = current_app.config['IMGPATH']
 
     if request.method == 'POST':
         f = request.files['file']
 
         if f:
             i = request.form['id']
-            p = os.path.join(file_path, i)
+
+            fpath = os.path.join(img_path, i) # e.g. images/1
+            sloc = os.path.join(current_app.static_folder, fpath) # e.g xyz/app/static/images/1
+
             try:
-                os.makedirs(p)
+                os.makedirs(sloc)
             except OSError:
                 pass
-            print(os.path.join(p, f.filename))
 
-            f.save(os.path.join(p, f.filename))
-            flash("File: '" + os.path.join(p, f.filename) + "' saved.")
+            fpath = os.path.join(fpath, f.filename)
+            sloc = os.path.join(sloc, f.filename)
+
+            f.save(sloc)
+            db.execute("UPDATE user SET image = ? WHERE id = ?", (fpath, i,))
+            db.commit()
+            flash("File: '" + fpath + "' saved.")
         else:
             flash("No file selected.")
     else:

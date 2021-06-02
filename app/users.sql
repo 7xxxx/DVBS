@@ -1,1 +1,1 @@
-INSERT INTO user (username, password) VALUES ('admin', 'plain$$password');
+INSERT INTO user (username, password, image) VALUES ('admin', 'plain$$password', '');

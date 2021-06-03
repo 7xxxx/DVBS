@@ -12,7 +12,7 @@
             <div class="tile is-child is-hidden-mobile">
                 <div class="tile is-child box is-primary is-info">
                     <figure class="image is-square">
-                        <img src={% if img == '' %}
+                        <img src={% if not img or img == '' %}
                             "https://picsum.photos/512/512"
                              {% else %}
                              "{{ url_for('static', filename=img) }}"

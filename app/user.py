@@ -10,6 +10,7 @@ from app.auth import (
 )
 from app.db import get_db
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 
 bp = Blueprint('user', __name__, url_prefix='/user')
 
@@ -86,31 +87,40 @@ def update_password(user_id, password, db):
                 user_id,))
     db.commit()
 
-@bp.route('/photo', methods=('GET', 'POST'))
+@bp.route('/photo/<uid>', methods=('GET', 'POST'))
 @login_required
-def photo():
+def photo(uid):
     db = get_db()
     img_path = current_app.config['IMGPATH']
-
+    user_id = session.get('user_id')
+    
     if request.method == 'POST':
         f = request.files['file']
-
-        if f:
-            i = request.form['id']
-
-            fpath = os.path.join(img_path, i) # e.g. images/1
-            sloc = os.path.join(current_app.static_folder, fpath) # e.g xyz/app/static/images/1
+        
+        if f and int(uid) == int(user_id):
+            # Storage location, e.g xyz/app/static/images,
+            # isnt controlled by the user anymore.
+            sloc = os.path.join(current_app.static_folder, img_path)
 
             try:
                 os.makedirs(sloc)
             except OSError:
                 pass
+            
+            # Normalize file name
+            fname = secure_filename(f.filename)
+            
+            # File path for user
+            fpath = os.path.join(img_path, fname)
 
-            fpath = os.path.join(fpath, f.filename)
-            sloc = os.path.join(sloc, f.filename)
-
+            # Exact storage location
+            sloc = os.path.join(sloc, fname)
+            
+            # Save file, e.g. static/images/xyz.png
             f.save(sloc)
-            db.execute("UPDATE user SET image = ? WHERE id = ?", (fpath, i,))
+            
+            # Update file path
+            db.execute("UPDATE user SET image = ? WHERE id = ?", (fpath, uid,))
             db.commit()
             flash("File: '" + fpath + "' saved.")
         else:

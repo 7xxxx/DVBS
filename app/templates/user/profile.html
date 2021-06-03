@@ -50,7 +50,7 @@
                  
                 <p class="title mt-5">Change Profile Picture</p>
                 <hr>
-                <form action="photo" method="POST" enctype="multipart/form-data">
+                <form action="photo/{{ g.user['id'] }}" method="POST" enctype="multipart/form-data">
                     <div class="buttons">
                         <div class="file is-normal mr-5">
                             <label class="file-label">
@@ -62,7 +62,6 @@
                                 </span>
                             </label>
                         </div>
-                      <input type="hidden" name="id" value="{{ g.user['id'] }}" />
                       <input class="button is-normal is-success" type="submit" value="Submit File" />
                     </div>
                 </form>

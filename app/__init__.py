@@ -7,7 +7,7 @@ from . import db, book, auth, user
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY='dev',
+        SECRET_KEY='OH_NEIN_DIESER_SCHLÜSSEL_DARF_NICHT_AUF_GITHUB_VEROEFFENTLICHT_WERDEN',
         DATABASE=os.path.join(app.instance_path, 'insecure.sqlite'),
         IMGPATH="images",
     )

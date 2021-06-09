@@ -127,6 +127,13 @@ def photo(uid):
 
             # Exact storage location
             sloc = os.path.join(sloc, fname)
+
+            # Delet old file
+            user = db.execute("SELECT * from user WHERE id = ?", (uid,)).fetchone()
+            try:
+                os.remove(os.path.join(current_app.static_folder, user['image']))
+            except OSError:
+                pass
             
             # Save file, e.g. static/images/xyz.png
             f.save(sloc)

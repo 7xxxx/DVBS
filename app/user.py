@@ -11,6 +11,8 @@ from app.auth import (
 from app.db import get_db
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
+import filetype
+from copy import copy
 
 bp = Blueprint('user', __name__, url_prefix='/user')
 
@@ -87,6 +89,16 @@ def update_password(user_id, password, db):
                 user_id,))
     db.commit()
 
+def allowed_file(filename):
+    """
+    Check that the given file is a jpg
+    or png.
+    """
+    kind = filetype.guess(filename)
+    filename.seek(0) # restore file pointer
+    return kind and kind.mime in ['image/png', 'image/jpg']
+
+
 @bp.route('/photo/<uid>', methods=('GET', 'POST'))
 @login_required
 def photo(uid):
@@ -97,7 +109,7 @@ def photo(uid):
     if request.method == 'POST':
         f = request.files['file']
         
-        if f and int(uid) == int(user_id):
+        if f and allowed_file(f) and int(uid) == int(user_id):
             # Storage location, e.g xyz/app/static/images,
             # isnt controlled by the user anymore.
             sloc = os.path.join(current_app.static_folder, img_path)

@@ -10,6 +10,7 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'insecure.sqlite'),
         IMGPATH="images",
+        MAX_CONTENT_LENGTH=5 * 1024 * 1024,
     )
 
     app.config.from_pyfile('config.py', silent=True)

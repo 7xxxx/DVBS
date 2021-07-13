@@ -1,4 +1,5 @@
 import sqlite3
+import time
 
 import markdown
 from flask import (
@@ -14,6 +15,8 @@ bp = Blueprint('book', __name__, url_prefix='/')
 def index():
     db = get_db()
     statement = 'SELECT * FROM book WHERE request = 0'
+
+    db.create_function("sleep", 1, time.sleep)
 
     if request.method == 'POST':
         find = request.form['find']

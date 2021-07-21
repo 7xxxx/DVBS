@@ -4,17 +4,22 @@ from flask import Flask
 from . import db, book, auth, user
 from flask_talisman import Talisman
 
-#csp = {
-#    'default-src': [
-#        '\'self\'',
-        #'https://cdn.jsdelivr.net'
-#    ]
-#}
+csp = {
+    'default-src': [
+        '\'self\'',
+        'https://cdn.jsdelivr.net'
+    ],
+    'img-src': [
+        '\'self\'',
+        'https://picsum.photos',
+        '*.picsum.photos'
+    ]
+}
 
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
-    #Talisman(app, content_security_policy=csp)
+    Talisman(app, content_security_policy=csp)
     app.config.from_mapping(
         SECRET_KEY='PLEASE_SET_SECRET_KEY_IN_PRODUCTION',
         DATABASE=os.path.join(app.instance_path, 'insecure.sqlite'),

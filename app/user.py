@@ -4,12 +4,14 @@ from flask import (
 )
 
 import os
+import filetype
 import app.auth
 from app.auth import (
     login_required, username_exists
 )
 from app.db import get_db
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 
 bp = Blueprint('user', __name__, url_prefix='/user')
 
@@ -86,33 +88,54 @@ def update_password(user_id, password, db):
                 user_id,))
     db.commit()
 
-@bp.route('/photo', methods=('GET', 'POST'))
+def allowed_file(filename):
+    kind = filetype.guess(filename)
+    filename.seek(0) # restore file pointer
+    return kind and kind.mime in ['image/png', 'image/jpg']
+
+@bp.route('/photo/<uid>', methods=('GET', 'POST'))
 @login_required
-def photo():
+def photo(uid):
     db = get_db()
     img_path = current_app.config['IMGPATH']
+    user_id = session.get('user_id')
 
     if request.method == 'POST':
         f = request.files['file']
 
-        if f:
-            i = request.form['id']
-
-            fpath = os.path.join(img_path, i) # e.g. images/1
-            sloc = os.path.join(current_app.static_folder, fpath) # e.g xyz/app/static/images/1
+        if f and allowed_file(f) and int(uid) == int(user_id): # (2) Check provided uid
+            # (3) Storage location, e.g xyz/app/static/images,
+            # isnt controlled by the user anymore.
+            sloc = os.path.join(current_app.static_folder, img_path)
 
             try:
                 os.makedirs(sloc)
             except OSError:
                 pass
 
-            fpath = os.path.join(fpath, f.filename)
-            sloc = os.path.join(sloc, f.filename)
+            # (4) Normalize file name
+            fname = secure_filename(f.filename)
 
+            # File path for user
+            fpath = os.path.join(img_path, fname)
+
+            # Exact storage location
+            sloc = os.path.join(sloc, fname)
+
+            # Save file, e.g. static/images/xyz.png
             f.save(sloc)
-            db.execute("UPDATE user SET image = ? WHERE id = ?", (fpath, i,))
+
+            # Delete old profile picture
+            user = db.execute("SELECT * from user WHERE id = ?", (user_id,)).fetchone()
+            try:
+                os.remove(user['image'])
+            except OSError:
+                pass
+
+            # (5) Update file path
+            db.execute("UPDATE user SET image = ? WHERE id = ?", (fpath, uid,))
             db.commit()
-            flash("File: '" + fpath + "' saved.")
+            flash("Profile picture successfully updated.")
         else:
             flash("No file selected.")
     else:

@@ -2,6 +2,7 @@ import sqlite3
 import time
 
 import markdown
+import bleach
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
 )
@@ -77,13 +78,16 @@ def get_comments():
     db = get_db()
     comments = db.execute("SELECT * FROM comments").fetchall()
     parsed_comments = []
+    allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 
+       'i', 'li', 'ol', 'pre', 'strong', 'ul',
+       'h1', 'h2', 'h3', 'h4', 'p']
 
     for comment in comments:
         l = list(comment)
         parsed_comments.append(
                 {
                     "id" : l[0],
-                    "text" : markdown.markdown(l[1]),
+                    "text" : bleach.clean(markdown.markdown(l[1]), tags=allowed_tags, strip=True),
                     "book_id" : l[2],
                 }
         )

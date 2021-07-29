@@ -1,8 +1,9 @@
 import os
 
-from flask import Flask
+from flask import (Flask, flash, redirect)
 from . import db, book, auth, user
 from flask_talisman import Talisman
+from app.db import init_database
 
 #csp = {
 #    'default-src': [
@@ -40,6 +41,13 @@ def create_app(test_config=None):
 
     # register profile blueprint
     app.register_blueprint(user.bp)
+
+    @app.route('/reset')
+    def reset_db():
+        init_database()
+        flash('reset successful')
+        return redirect("/")
+        
 
     return app
 

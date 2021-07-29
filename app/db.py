@@ -52,7 +52,10 @@ def insert_books():
 @click.command('init-db')
 @with_appcontext
 def init_db_command():
+    init_database()
+    click.echo("DB initialized")
+
+def init_database():
     init_db()
     insert_users()
     insert_books()
-    click.echo("DB initialized")

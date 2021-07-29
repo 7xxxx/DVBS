@@ -1,4 +1,6 @@
+bleach==3.3.1
 click==7.1.2
+filetype==1.0.7
 Flask==1.1.2
 flask-talisman==0.8.1
 gunicorn==20.1.0
@@ -6,5 +8,8 @@ itsdangerous==1.1.0
 Jinja2==2.11.3
 Markdown==3.3.4
 MarkupSafe==1.1.1
+packaging==21.0
+pyparsing==2.4.7
 six==1.16.0
+webencodings==0.5.1
 Werkzeug==1.0.1

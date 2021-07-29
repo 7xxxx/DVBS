@@ -45,7 +45,6 @@ def create_app(test_config=None):
     @app.route('/reset')
     def reset_db():
         init_database()
-        flash('reset successful')
         return redirect("/")
         
 

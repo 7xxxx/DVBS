@@ -16,20 +16,19 @@ bp = Blueprint('book', __name__, url_prefix='/')
 def index():
     db = get_db()
     statement = 'SELECT * FROM book WHERE request = 0'
-
     db.create_function("sleep", 1, time.sleep)
 
     if request.method == 'POST':
         find = request.form['find']
-        statement = 'SELECT * from book WHERE title LIKE "%{}%" AND request = 0'.format(find)
-        print(statement)
 
-    try:
-        books = db.execute(
-            statement
-        ).fetchall()
-    except sqlite3.OperationalError as err:
-        return render_template('book/index.html', error=err)
+        try:
+            books = db.execute(
+                'SELECT * from book WHERE title LIKE (?) AND request = 0', ('%'+find+'%',)
+            ).fetchall()
+        except sqlite3.OperationalError as err:
+            return render_template('book/index.html', error=err)
+    else:
+        books = db.execute(statement).fetchall()
 
     comments = get_comments()
     return render_template('book/index.html', books=books, comments=comments)
@@ -93,6 +92,3 @@ def get_comments():
         )
         
     return parsed_comments
-
-
-    

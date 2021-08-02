@@ -29,14 +29,7 @@ def profile(username):
         delete = int(request.form['delete'])
         process_request(new_username, new_password, delete)
 
-    elif request.method == 'GET' and len(request.args) > 0 and form.validate():
-        new_username = request.args.get("username")
-        new_password = request.args.get("password")
-        delete = int(request.args.get("delete"))
-        process_request(new_username, new_password, delete)
-
     user = db.execute("SELECT * from user WHERE username = ?", (username,)).fetchone()
-
     return render_template('user/profile.html', user=username, img=user['image'], form=form)
 
 

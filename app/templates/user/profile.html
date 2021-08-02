@@ -25,6 +25,7 @@
         <div class="tile is-parent">
             <div class="tile is-child box">
                 <form method="post" action="/user/{{ g.user['username'] }}" id="form1">
+                    {{ form.csrf_token }}
                     <p class="title">Edit your Profile</p>
                     <p class="subtitle">Logged in as user <b>{{ g.user['username'] }}</b></p>
 

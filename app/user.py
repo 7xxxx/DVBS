@@ -10,6 +10,7 @@ from app.auth import (
     login_required, username_exists
 )
 from app.db import get_db
+from flask_wtf import FlaskForm
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
@@ -20,13 +21,15 @@ bp = Blueprint('user', __name__, url_prefix='/user')
 @login_required
 def profile(username):
     db = get_db()
-    if request.method == 'POST':
+    form = FlaskForm()      # Place and validate CSRF token in form
+
+    if request.method == 'POST' and form.validate():
         new_username = request.form['username']
         new_password = request.form['password']
         delete = int(request.form['delete'])
         process_request(new_username, new_password, delete)
 
-    elif request.method == 'GET' and len(request.args) > 0:
+    elif request.method == 'GET' and len(request.args) > 0 and form.validate():
         new_username = request.args.get("username")
         new_password = request.args.get("password")
         delete = int(request.args.get("delete"))
@@ -34,7 +37,7 @@ def profile(username):
 
     user = db.execute("SELECT * from user WHERE username = ?", (username,)).fetchone()
 
-    return render_template('user/profile.html', user=username, img=user['image'])
+    return render_template('user/profile.html', user=username, img=user['image'], form=form)
 
 
 def process_request(username, password, delete):

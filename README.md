@@ -13,8 +13,6 @@ docker run --name app -p 5000:5000 app
 python3 -m venv venv
 source venv/bin/activate
 pip3 install -r requirements.txt
-export FLASK_APP=app
-export FLASK_ENV=development
 flask init-db
-flask run
+sudo ./serv_gunicorn.sh
 ```

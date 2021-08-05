@@ -2,20 +2,10 @@ import os
 
 from flask import (Flask, flash, redirect)
 from . import db, book, auth, user
-from flask_talisman import Talisman
 from app.db import init_database
-
-#csp = {
-#    'default-src': [
-#        '\'self\'',
-        #'https://cdn.jsdelivr.net'
-#    ]
-#}
-
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
-    #Talisman(app, content_security_policy=csp)
     app.config.from_mapping(
         SECRET_KEY='PLEASE_SET_SECRET_KEY_IN_PRODUCTION',
         DATABASE=os.path.join(app.instance_path, 'insecure.sqlite'),

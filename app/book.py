@@ -3,7 +3,7 @@ import time
 
 import markdown
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint, redirect, render_template, request, url_for
 )
 
 from app.db import get_db
@@ -53,6 +53,7 @@ def inquiry():
         db.commit()
 
     return render_template('book/inquiry.html', requests=requests, comments=comments)
+
 
 @bp.route('/comment/<bid>', methods=['POST'])
 def comment(bid):

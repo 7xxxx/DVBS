@@ -1,15 +1,15 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session,
+    Blueprint, flash, redirect, render_template, request, session,
     current_app, url_for
 )
 
 import os
 import app.auth
 from app.auth import (
-    login_required, username_exists
+    login_required
 )
 from app.db import get_db
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import generate_password_hash
 
 bp = Blueprint('user', __name__, url_prefix='/user')
 
@@ -86,6 +86,7 @@ def update_password(user_id, password, db):
                 user_id,))
     db.commit()
 
+
 @bp.route('/photo', methods=('GET', 'POST'))
 @login_required
 def photo():
@@ -98,8 +99,8 @@ def photo():
         if f:
             i = request.form['id']
 
-            fpath = os.path.join(img_path, i) # e.g. images/1
-            sloc = os.path.join(current_app.static_folder, fpath) # e.g xyz/app/static/images/1
+            fpath = os.path.join(img_path, i)  # e.g. images/1
+            sloc = os.path.join(current_app.static_folder, fpath)  # e.g xyz/app/static/images/1
 
             try:
                 os.makedirs(sloc)

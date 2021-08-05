@@ -1,5 +1,5 @@
 INSERT INTO user (username, password, image) VALUES
                                                     ('admin', 'plain$$password', ''),
-                                                    ('Mustermann', 'plain$$Mustermann', ''),
-                                                    ('Musterfrau', 'plain$$Musterfrau', ''),
+                                                    ('mustermann', 'plain$$mustermann', ''),
+                                                    ('musterfrau', 'plain$$musterfrau', ''),
                                                     ('test', 'plain$$test', '');

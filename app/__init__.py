@@ -22,7 +22,7 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     Talisman(app, content_security_policy=csp)
     app.config.from_mapping(
-        SECRET_KEY=os.getenv('SECRET_KEY'),
+        SECRET_KEY=os.getenv('SECRET_KEY') or 'abc',
         DATABASE=os.path.join(app.instance_path, 'insecure.sqlite'),
         IMGPATH="images",
         MAX_CONTENT_LENGTH=5 * 1024 * 1024,
